@@ -1,0 +1,24 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="800" height="600" rx="36" fill="#EEF4F8"/>
+  <circle cx="250" cy="160" r="88" fill="#D6E4EC"/>
+  <circle cx="550" cy="120" r="54" fill="#C6D9E0"/>
+  <rect x="140" y="240" width="520" height="240" rx="28" fill="#FFFFFF" stroke="#9BB5C1" stroke-width="2"/>
+  <rect x="180" y="280" width="160" height="24" rx="12" fill="#4F7F94"/>
+  <rect x="360" y="280" width="240" height="24" rx="12" fill="#82A7B5"/>
+  <rect x="180" y="320" width="420" height="16" rx="8" fill="#B8CED7"/>
+  <rect x="180" y="350" width="340" height="16" rx="8" fill="#D8E6EA"/>
+  <rect x="180" y="390" width="360" height="16" rx="8" fill="#B8CED7"/>
+  <rect x="180" y="430" width="240" height="16" rx="8" fill="#D8E6EA"/>
+  <rect x="220" y="220" width="260" height="180" rx="24" fill="#4F7F94" opacity="0.14"/>
+  <path d="M300 120C310 92 340 82 368 92C396 102 418 128 420 156C422 184 402 210 374 218C346 226 312 212 300 184C288 156 290 133 300 120Z" fill="#4F7F94" opacity="0.2"/>
+  <path d="M520 420C508 400 518 372 542 362C566 352 604 362 616 382C628 402 618 430 594 440C570 450 536 440 520 420Z" fill="#82A7B5" opacity="0.22"/>
+  <circle cx="580" cy="360" r="42" fill="#D6E4EC"/>
+  <circle cx="610" cy="160" r="18" fill="#4F7F94"/>
+  <circle cx="640" cy="70" r="28" fill="#C6D9E0"/>
+  <path d="M170 500C170 486 182 474 196 474H604C618 474 630 486 630 500V520H170V500Z" fill="#E7F0F4"/>
+  <path d="M208 504C208 500.686 210.686 498 214 498H294C297.314 498 300 500.686 300 504V514C300 517.314 297.314 520 294 520H214C210.686 520 208 517.314 208 514V504Z" fill="#4F7F94"/>
+  <path d="M372 504C372 500.686 374.686 498 378 498H458C461.314 498 464 500.686 464 504V514C464 517.314 461.314 520 458 520H378C374.686 520 372 517.314 372 514V504Z" fill="#4F7F94"/>
+  <path d="M484 504C484 500.686 486.686 498 490 498H570C573.314 498 576 500.686 576 504V514C576 517.314 573.314 520 570 520H490C486.686 520 484 517.314 484 514V504Z" fill="#4F7F94"/>
+  <text x="240" y="180" fill="#102A43" font-size="26" font-weight="700" font-family="Inter, sans-serif">Event planning made easy</text>
+  <text x="240" y="210" fill="#486581" font-size="16" font-family="Inter, sans-serif">Organize sessions, tickets, and attendees in one place.</text>
+</svg>

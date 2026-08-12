@@ -1,0 +1,2 @@
+# External dependencies required for AWS deployment
+boto3

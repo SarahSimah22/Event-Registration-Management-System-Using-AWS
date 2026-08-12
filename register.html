@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register for an Event</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="nav-bar">
+      <a class="nav-brand" href="index.html">Sims Event Hub</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a class="active" href="register.html">Register</a>
+        <a href="registrations.html">My Registrations</a>
+      </div>
+    </nav>
+
+    <div class="card">
+      <header>
+        <h1>Event Registration &amp; Ticketing System</h1>
+      </header>
+
+      <div class="body">
+        <div id="registerMsg" class="msg"></div>
+
+        <form id="registerForm">
+          <div class="field-row">
+            <div>
+              <label for="eventSelect">Event Name</label>
+              <select id="eventSelect" required>
+                <option value="">Loading events…</option>
+              </select>
+            </div>
+            <div>
+              <label for="emailInput">Email Address</label>
+              <input type="email" id="emailInput" placeholder="participant@email.com" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" id="registerBtn">Register →</button>
+        </form>
+
+        <h2>Available Events</h2>
+        <div id="eventsList" class="events-list">
+          <div class="loading">Loading events…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

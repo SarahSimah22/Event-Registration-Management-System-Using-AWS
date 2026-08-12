@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Registrations</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <nav class="nav-bar">
+      <a class="nav-brand" href="index.html">Sims Event Hub</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="register.html">Register</a>
+        <a class="active" href="registrations.html">My Registrations</a>
+      </div>
+    </nav>
+
+    <div class="card">
+      <header>
+        <h1>My Registrations</h1>
+      </header>
+      <div class="body">
+        <div class="lookup-row">
+          <input type="email" id="lookupEmail" placeholder="Enter your email to view registrations">
+          <button id="lookupBtn">View</button>
+        </div>
+        <div id="regResults" style="margin-top: 12px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

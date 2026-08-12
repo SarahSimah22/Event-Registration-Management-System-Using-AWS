@@ -1,0 +1,43 @@
+name: Deploy Event Registration System
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/setup-sam@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Build and deploy
+        run: |
+          sam build --template-file Infrastructure/template.yaml
+          sam deploy --template-file .aws-sam/build/template.yaml --stack-name event-registration-stack --capabilities CAPABILITY_IAM --resolve-s3
+
+      - name: Get deployed API endpoint
+        run: |
+          API_URL=$(aws cloudformation describe-stacks --stack-name event-registration-stack --query 'Stacks[0].Outputs[?OutputKey==`ApiEndpoint`].OutputValue' --output text)
+          echo "API_URL=$API_URL" >> $GITHUB_ENV
+
+      - name: Generate frontend API config
+        run: |
+          cat > Event-Registration-Management-System-Using-AWS/api-config.js <<'EOF'
+          window.API_BASE_URL = "${API_URL}";
+          EOF
+
+      - name: Deploy frontend to S3
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          BUCKET_NAME="event-registration-$ACCOUNT_ID"
+          aws s3 sync Event-Registration-Management-System-Using-AWS/ s3://$BUCKET_NAME --delete --acl public-read \
+            --exclude "Backend/*" --exclude "Infrastructure/*" --exclude ".github/*" --exclude ".git/*" --exclude "deploy.yml" --exclude "README.md" --exclude "LICENSE" --exclude "template.yaml"

@@ -1,0 +1,141 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Event Registration System
+
+Resources:
+  EventRegistrationApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - "*"
+        AllowMethods:
+          - GET
+          - POST
+          - DELETE
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+
+  EventRegistrationTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: EventRegistrationTable
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: registrationId
+          AttributeType: S
+        - AttributeName: email
+          AttributeType: S
+        - AttributeName: eventId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: registrationId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: EmailEventIndex
+          KeySchema:
+            - AttributeName: email
+              KeyType: HASH
+            - AttributeName: eventId
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: EventRegistrationLambdaRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: DynamoDBAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                  - dynamodb:Scan
+                Resource: !GetAtt EventRegistrationTable.Arn
+
+  EventRegistrationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: EventRegistrationFunction
+      Runtime: python3.12
+      Handler: lambda_function.lambda_handler
+      CodeUri: ../Backend
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref EventRegistrationTable
+      Events:
+        EventsApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref EventRegistrationApi
+            Path: /events
+            Method: GET
+        RegisterApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref EventRegistrationApi
+            Path: /register
+            Method: POST
+        RegistrationsApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref EventRegistrationApi
+            Path: /registrations/{email}
+            Method: GET
+        CancelApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref EventRegistrationApi
+            Path: /registration/{id}
+            Method: DELETE
+
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub event-registration-${AWS::AccountId}
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+
+  FrontendBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref FrontendBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Sub '${FrontendBucket.Arn}/*'
+
+Outputs:
+  ApiEndpoint:
+    Description: HTTP API endpoint
+    Value: !Sub "https://${EventRegistrationApi}.execute-api.${AWS::Region}.amazonaws.com"
+
+  WebsiteBucket:
+    Description: S3 Bucket
+    Value: !Ref FrontendBucket
+
+  DynamoDBTable:
+    Description: DynamoDB Table
+    Value: !Ref EventRegistrationTable
